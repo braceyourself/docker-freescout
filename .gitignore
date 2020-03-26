@@ -1,0 +1,6 @@
+db/
+logs/
+data/ls
+data/
+modules/
+*.env

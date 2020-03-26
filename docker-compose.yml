@@ -1,0 +1,36 @@
+version: '3.4'
+services:
+  freescout-app:
+    image: ethanabrace/freescout
+    container_name: freescout-app
+    ports:
+    - 8001:80
+    links:
+    - freescoutdb
+    volumes:
+    - ./data:/www/html
+    - ./modules:/www/html/Modules
+    - ./logs/:/www/logs
+    env_file:
+      - .env
+    restart: always
+
+  freescoutdb:
+    image: tiredofit/mariadb
+    container_name: freescoutdb
+    volumes:
+      - ./db:/var/lib/mysql
+    env_file:
+      - db.env
+    restart: always
+
+  freescout-db-backup:
+    container_name: freescout-db-backup
+    image: tiredofit/db-backup
+    links:
+     - freescoutdb
+    volumes:
+      - ./dbbackup:/backup
+    env_file:
+      - backup.env
+    restart: always
